@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Architect PRO</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <link href="[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap)" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fdf8f4; color: #4a4036; }
         .bg-pattern { position: relative; background-image: linear-gradient(rgba(180, 160, 140, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(180, 160, 140, 0.07) 1px, transparent 1px); background-size: 30px 30px; }
@@ -178,8 +178,7 @@
         </div>
         <div id="historyList" class="flex-grow overflow-y-auto p-4 space-y-3"></div>
     </div>
-
-    <script>
+        <script>
         let currentAssets = [];
         let base64ImageProduct = "";
         let base64ImageChar = "";
@@ -307,7 +306,7 @@
             }
         }
 
-                async function generateContent(isRegen = false, regenIndex = null) {
+        async function generateContent(isRegen = false, regenIndex = null) {
             const apiKey = localStorage.getItem("gemini_api_key");
             if (!apiKey) return openApiModal();
 
@@ -356,7 +355,8 @@ CRITICAL RULES FOR AI:
                     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestBody)
                 });
 
-                let rawResponse = data.candidates[0].content.parts[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
+                let rawResponse = data.candidates[0].content.parts[0].text.replace(/```json/g, '').replace(/
+```/g, '').trim();
                 let generatedData = JSON.parse(rawResponse);
 
                 if (!isRegen) {
