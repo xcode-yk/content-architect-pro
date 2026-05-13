@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,20 +58,20 @@
 </head>
 <body class="bg-pattern min-h-screen flex flex-col">
 
-    <nav class="glass sticky top-0 z-40 px-6 py-4 flex justify-between items-center mb-6">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl font-bold tracking-tight text-[#5a4d41]">Content Architect <span class="text-[#8c7a6b]">PRO</span></span>
-            <span class="text-xs font-semibold px-2 py-1 bg-[#eae0d5] text-[#5a4d41] rounded-md">By Fhr.att - FreakingLabs</span>
+     <nav class="glass sticky top-0 z-40 px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0 mb-6">
+        <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <span class="text-xl sm:text-2xl font-bold tracking-tight text-[#5a4d41]">Content Architect <span class="text-[#8c7a6b]">PRO</span></span>
+            <span class="text-[10px] sm:text-xs font-semibold px-2 py-1 bg-[#eae0d5] text-[#5a4d41] rounded-md">By Fhr.att - FreakingLabs</span>
         </div>
-        <div class="flex gap-3">
-            <button onclick="toggleFullScreen()" class="btn-hover bg-white/80 border border-[#d5c7b8] text-[#5a4d41] px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
-                🔲 Fullscreen
+        <div class="flex gap-2 w-full sm:w-auto justify-center">
+            <button onclick="toggleFullScreen()" class="btn-hover bg-white/80 border border-[#d5c7b8] text-[#5a4d41] px-3 py-2 rounded-lg font-medium text-xs sm:text-sm flex items-center justify-center flex-1 sm:flex-none">
+                🔲 <span class="hidden sm:inline ml-2">Fullscreen</span>
             </button>
-            <button onclick="openApiModal()" class="btn-hover bg-white/80 border border-[#d5c7b8] text-[#5a4d41] px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+            <button onclick="openApiModal()" class="btn-hover bg-white/80 border border-[#d5c7b8] text-[#5a4d41] px-3 py-2 rounded-lg font-medium text-xs sm:text-sm flex items-center justify-center flex-1 sm:flex-none">
                 🔑 API Key
             </button>
         </div>
-    </nav>
+     </nav>
 
     <main class="flex-grow container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
         <div class="lg:col-span-4 flex flex-col gap-5">
