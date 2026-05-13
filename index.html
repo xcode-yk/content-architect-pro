@@ -1,0 +1,422 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Architect PRO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fdf8f4;
+            color: #4a4036;
+        }
+        
+        .bg-pattern {
+            position: relative;
+            background-image: 
+                linear-gradient(rgba(180, 160, 140, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 160, 140, 0.07) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .bg-pattern::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(210, 195, 175, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(225, 210, 190, 0.4) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(139, 120, 100, 0.1);
+        }
+
+        .btn-hover { transition: all 0.2s ease-in-out; }
+        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(139, 120, 100, 0.2); }
+        .btn-hover:active { transform: translateY(0); }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #bfa892;
+            box-shadow: 0 0 0 3px rgba(191, 168, 146, 0.2);
+        }
+
+        .pulse-loader { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .7; transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-pattern min-h-screen flex flex-col">
+
+    <nav class="glass sticky top-0 z-40 px-6 py-4 flex justify-between items-center mb-6">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl font-bold tracking-tight text-[#5a4d41]">Content Architect <span class="text-[#8c7a6b]">PRO</span></span>
+            <span class="text-xs font-semibold px-2 py-1 bg-[#eae0d5] text-[#5a4d41] rounded-md">By Fhr.att - FreakingLabs</span>
+        </div>
+        <div class="flex gap-3">
+            <button onclick="toggleFullScreen()" class="btn-hover bg-white/80 border border-[#d5c7b8] text-[#5a4d41] px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+                🔲 Fullscreen
+            </button>
+            <button onclick="openApiModal()" class="btn-hover bg-white/80 border border-[#d5c7b8] text-[#5a4d41] px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
+                🔑 API Key
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+        <div class="lg:col-span-4 flex flex-col gap-5">
+            <div class="glass p-6 rounded-2xl">
+                <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-[#5a4d41]">📋 Project Details</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Product Name</label>
+                        <input type="text" id="productName" placeholder="e.g. Skintific Mugwort Clay Mask" class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white/50 text-sm">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Specs / Screenshot</label>
+                        <div class="relative w-full h-32 border-2 border-dashed border-[#bfa892] rounded-xl flex flex-col items-center justify-center bg-white/30 cursor-pointer overflow-hidden btn-hover" onclick="document.getElementById('productImage').click()">
+                            <input type="file" id="productImage" class="hidden" accept="image/*" onchange="previewImage(event)">
+                            <img id="imagePreview" class="hidden absolute inset-0 w-full h-full object-contain bg-white">
+                            <div id="descIcon" class="text-center">
+                                <span class="text-2xl">📸</span>
+                                <p class="text-xs text-[#8c7a6b] mt-1 font-medium">Click to upload image</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Target Audience</label>
+                        <input type="text" id="targetAudience" placeholder="e.g. Gen Z Women" class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white/50 text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">Content Type</label>
+                            <select id="contentType" class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white/50 text-sm">
+                                <option value="Try-On / Review">Try-On / Review</option>
+                                <option value="Unboxing">Unboxing</option>
+                                <option value="Cinematic B-Roll">Cinematic B-Roll</option>
+                                <option value="Problem-Solution">Problem-Solution</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">Method</label>
+                            <select id="prodMethod" class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white/50 text-sm">
+                                <option value="Image Reference">Image Reference</option>
+                                <option value="Frame to Frame (Kling/Flow)">Frame to Frame (Kling/Flow)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Setting / Background</label>
+                        <select id="settingBg" class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white/50 text-sm">
+                            <option value="Aesthetic Minimalist Room">Aesthetic Minimalist Room</option>
+                            <option value="Aesthetic Kitchen">Aesthetic Kitchen</option>
+                            <option value="Luxury Car Interior">Luxury Car Interior</option>
+                            <option value="Tropical Resort / Nature">Tropical Resort / Nature</option>
+                            <option value="Studio with Solid Backdrop">Studio with Solid Backdrop</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Visual Vibe</label>
+                        <select id="visualVibe" class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white/50 text-sm">
+                            <option value="Warm & Cozy">Warm & Cozy</option>
+                            <option value="Bright & Clean">Bright & Clean</option>
+                            <option value="Rustic Nature">Rustic Nature</option>
+                            <option value="Editorial High Fashion">Editorial High Fashion</option>
+                            <option value="Y2K Pop Retro">Y2K Pop Retro</option>
+                        </select>
+                    </div>
+
+                    <button onclick="generateContent()" class="btn-hover w-full bg-[#8c7a6b] text-white font-bold py-3 px-4 rounded-xl shadow-lg mt-2">
+                        🚀 Generate Blueprint
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8 flex flex-col gap-4">
+            <div class="glass p-6 rounded-2xl min-h-[500px] flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-[#5a4d41]">🎬 AI Architecture Output</h2>
+                    <span class="text-xs font-semibold bg-green-100 text-green-700 px-3 py-1 rounded-full border border-green-200">Optimized for: Kling, Flow Labs, Dreamina</span>
+                </div>
+                
+                <div id="loadingState" class="hidden flex-grow flex flex-col items-center justify-center">
+                    <div class="w-16 h-16 border-4 border-[#d5c7b8] border-t-[#8c7a6b] rounded-full animate-spin mb-4 pulse-loader"></div>
+                    <p id="loadingText" class="font-semibold text-[#5a4d41]">Analyzing context & drafting blueprint...</p>
+                </div>
+
+                <div id="outputContainer" class="hidden flex-col gap-4"></div>
+
+                <div id="emptyState" class="flex-grow flex flex-col items-center justify-center text-center opacity-50">
+                    <span class="text-6xl mb-4">✨</span>
+                    <h3 class="font-bold text-lg text-[#5a4d41]">No Data Yet</h3>
+                    <p class="text-sm">Fill out the project details and click Generate.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-6 text-center text-sm font-semibold text-[#8c7a6b]">
+        Engineered with Precision by Fhr.att - FreakingLabs © 2026
+    </footer>
+
+    <!-- API Modal -->
+    <div id="apiModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="glass p-6 rounded-2xl w-96 max-w-[90%] shadow-2xl transform transition-all">
+            <h3 class="font-bold text-lg mb-2 text-[#5a4d41]">🔑 API Configuration</h3>
+            <p class="text-xs text-[#8c7a6b] mb-4">Enter your Gemini API Key. It is stored securely in your browser's local storage.</p>
+            <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full p-3 rounded-xl border border-[#d5c7b8] bg-white text-sm mb-4">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeApiModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-500 hover:bg-gray-100">Cancel</button>
+                <button onclick="saveApiKey()" class="px-4 py-2 rounded-lg text-sm font-semibold bg-[#8c7a6b] text-white hover:bg-[#7a6a5d]">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAssets = [];
+        let base64Image = "";
+        const MAX_RETRIES = 5;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!localStorage.getItem("gemini_api_key")) openApiModal();
+        });
+
+        function openApiModal() {
+            document.getElementById('apiModal').classList.remove('hidden');
+            document.getElementById('apiKeyInput').value = localStorage.getItem("gemini_api_key") || "";
+        }
+
+        function closeApiModal() { document.getElementById('apiModal').classList.add('hidden'); }
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (key) {
+                localStorage.setItem("gemini_api_key", key);
+                closeApiModal();
+            } else {
+                alert("API Key cannot be empty!");
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => alert("Fullscreen blocked by browser."));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                    document.getElementById('descIcon').classList.add('hidden');
+                    base64Image = e.target.result.split(',')[1];
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function copyToClipboard(buttonElement, isVo = false) {
+            try {
+                let textToCopy = "";
+                if (isVo) {
+                    textToCopy = buttonElement.previousElementSibling.innerText.replace(/(^"|"$)/g, ''); // Remove outer quotes
+                } else {
+                    textToCopy = buttonElement.previousElementSibling.value;
+                }
+                
+                await navigator.clipboard.writeText(textToCopy);
+                const originalText = buttonElement.innerText;
+                buttonElement.innerText = "✅ Copied";
+                buttonElement.classList.add("bg-green-100", "text-green-700", "border-green-300");
+                setTimeout(() => {
+                    buttonElement.innerText = originalText;
+                    buttonElement.classList.remove("bg-green-100", "text-green-700", "border-green-300");
+                }, 2000);
+            } catch (err) {
+                alert("Failed to copy. Your browser might be blocking clipboard access.");
+            }
+        }
+
+        async function fetchWithRetry(url, options, retries = MAX_RETRIES, delay = 2000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 429 || response.status === 503) throw new Error("HIGH_DEMAND");
+                    if (!response.ok) {
+                        const errData = await response.json();
+                        throw new Error(errData.error?.message || "API Error");
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (error.message === "HIGH_DEMAND" && i < retries - 1) {
+                        document.getElementById('loadingText').innerText = `Server busy. Retrying... (${i + 1}/${retries})`;
+                        await new Promise(res => setTimeout(res, delay));
+                        delay *= 2; 
+                    } else {
+                        throw error;
+                    }
+                }
+            }
+        }
+
+        async function generateContent(isRegen = false, regenIndex = null) {
+            const apiKey = localStorage.getItem("gemini_api_key");
+            if (!apiKey) return openApiModal();
+
+            const prodName = document.getElementById('productName').value || "The Product";
+            const audience = document.getElementById('targetAudience').value || "General";
+            const cType = document.getElementById('contentType').value;
+            const pMethod = document.getElementById('prodMethod').value;
+            const bgSet = document.getElementById('settingBg').value;
+            const vibe = document.getElementById('visualVibe').value;
+
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('outputContainer').classList.add('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('loadingText').innerText = isRegen ? `Regenerating from Clip ${regenIndex + 1}...` : "Drafting Blueprint...";
+
+            const strictRules = `
+CRITICAL RULES FOR AI:
+1. OUTPUT FORMAT: A valid RAW JSON ARRAY ONLY. Contains objects with exact keys: "clip", "visual", "vo", "image_prompt", "motion_prompt". DO NOT wrap in \`\`\`json.
+2. LANGUAGE: ENGLISH ONLY.
+3. IMAGE PROMPT RULE: Never describe the product's color/shape/text. Describe ONLY the setting, lighting, model action, and camera angle. End EVERY image_prompt exactly with: ", holding the product. The product must be an exact 100% replica of the reference image."
+4. CINEMATOGRAPHY:
+   - Clip 1: Medium/Wide Shot (Hook).
+   - Clip 2: Extreme Close-up/Macro (Texture/Detail).
+   - Clip 3: Dynamic Tracking Shot (Action).
+   - Clip 4: Beauty Shot (CTA).
+5. COPYWRITING: Clip 1 VO must have an aggressive hook. Clip 4 VO must have a strong Call to Action.
+6. METHOD LOGIC (${pMethod}):
+   If "Frame to Frame", motion_prompt: "Start Frame: Image 1. End Frame: Image 2. Motion: [action]".
+   If "Image Reference", motion_prompt: "Use image as first frame. Motion: [action]".`;
+
+            let promptText = isRegen 
+                ? `Regenerate remaining ${4 - regenIndex} clips starting from Clip ${regenIndex + 1} for ${prodName}. Maintain flow. ${strictRules}`
+                : `Generate exactly 4 video clips for a ${cType} video about ${prodName}. Target: ${audience}. Setting: ${bgSet}. Vibe: ${vibe}. ${strictRules}`;
+
+            const requestBody = {
+                contents: [{
+                    parts: [
+                        { text: promptText },
+                        ...(base64Image ? [{ inline_data: { mime_type: "image/jpeg", data: base64Image } }] : [])
+                    ]
+                }],
+                generationConfig: { temperature: 0.7 }
+            };
+
+            try {
+                const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestBody)
+                });
+
+                let rawResponse = data.candidates[0].content.parts[0].text;
+                rawResponse = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+                
+                let generatedData;
+                try {
+                    generatedData = JSON.parse(rawResponse);
+                } catch (e) {
+                    throw new Error("AI returned malformed data. Please click Generate again.");
+                }
+
+                if (!isRegen) {
+                    currentAssets = generatedData;
+                } else {
+                    const newClips = generatedData.slice(0, 4 - regenIndex);
+                    newClips.forEach((item, idx) => item.clip = `Clip ${regenIndex + 1 + idx}`);
+                    currentAssets = [...currentAssets.slice(0, regenIndex), ...newClips];
+                }
+                renderOutput(currentAssets);
+
+            } catch (error) {
+                alert(`Generation Error: ${error.message}`);
+                if (currentAssets.length === 0) document.getElementById('emptyState').classList.remove('hidden');
+                else document.getElementById('outputContainer').classList.remove('hidden');
+            } finally {
+                document.getElementById('loadingState').classList.add('hidden');
+            }
+        }
+
+        function renderOutput(data) {
+            const container = document.getElementById('outputContainer');
+            container.innerHTML = "";
+            
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white/60 border border-[#d5c7b8] rounded-xl p-5 shadow-sm";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#d5c7b8]">
+                        <h4 class="font-bold text-lg text-[#5a4d41]">${item.clip}</h4>
+                        <button onclick="generateContent(true, ${index})" class="btn-hover text-xs font-bold bg-[#eae0d5] text-[#5a4d41] px-3 py-1 rounded-md border border-[#d5c7b8]">
+                            🔄 Re-Gen from Here
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#8c7a6b]">Visual & Action</span>
+                                <p class="text-sm mt-1 text-slate-700 bg-white/50 p-2 rounded-md border border-white">${item.visual}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#8c7a6b]">Voiceover (VO)</span>
+                                <div class="relative mt-1">
+                                    <p class="text-sm text-slate-700 bg-white/50 p-2 pr-16 rounded-md border border-white italic">"${item.vo}"</p>
+                                    <button onclick="copyToClipboard(this, true)" class="absolute right-2 top-2 text-xs bg-white px-2 py-1 rounded shadow-sm border border-[#d5c7b8] btn-hover">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#8c7a6b]">Image Prompt</span>
+                                <div class="relative mt-1">
+                                    <textarea readonly class="w-full text-xs text-slate-700 bg-white/50 p-2 pr-16 rounded-md border border-[#d5c7b8] resize-none h-20">${item.image_prompt}</textarea>
+                                    <button onclick="copyToClipboard(this)" class="absolute right-2 top-2 text-xs bg-white px-2 py-1 rounded shadow-sm border border-[#d5c7b8] btn-hover">Copy</button>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#8c7a6b]">Motion Prompt</span>
+                                <div class="relative mt-1">
+                                    <textarea readonly class="w-full text-xs text-slate-700 bg-white/50 p-2 pr-16 rounded-md border border-[#d5c7b8] resize-none h-16">${item.motion_prompt}</textarea>
+                                    <button onclick="copyToClipboard(this)" class="absolute right-2 top-2 text-xs bg-white px-2 py-1 rounded shadow-sm border border-[#d5c7b8] btn-hover">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            container.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+
+
+```
